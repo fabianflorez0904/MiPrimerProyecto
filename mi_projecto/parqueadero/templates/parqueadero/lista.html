@@ -1,0 +1,101 @@
+{% extends "base_app_parqueadero.html" %} {% block content %}
+
+<div class="card">
+  <div class="card-header">App parqueadero</div>
+  <div class="card-body">
+    <h5 class="card-title">Parqueaderos Disponibles</h5>
+    {% comment %} TABLE {% endcomment %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col" colspan="2">Capacida</th>
+          <th scope="col">Ubicacion</th>
+          <th scope="col">Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for parqueadero in parqueaderos %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td colspan="2">{{parqueadero.nombre}}</td>
+          <td>{{parqueadero.capacidad}}</td>
+          <td>{{parqueadero.ubicacion}}</td>
+          <td>
+            <a
+              href="{% url 'editar_parqueadero' parqueadero.id %}"
+              class="btn btn-outline-warning"
+            >
+              <i class="bi bi-pen"></i>
+              Editar
+            </a>
+
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              onclick="confirmarEliminacion('{% url 'eliminar_parqueadero' parqueadero.id %}')"
+            >
+              <i class="bi bi-trash-fill"></i>
+              Eliminar
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="{% url 'agregar_parqueadero' %}" class="btn btn-primary"
+      >➕ Agregar parqueadero</a
+    >
+  </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div
+  class="modal fade"
+  id="confirmDeleteModal"
+  tabindex="-1"
+  aria-labelledby="confirmDeleteLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteLabel">
+          Confirmar Eliminación
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que quieres eliminar este parqueadero?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <form id="deleteForm" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Confirmar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmarEliminacion(url) {
+    let form = document.getElementById("deleteForm");
+    form.action = url;
+    let modal = new bootstrap.Modal(
+      document.getElementById("confirmDeleteModal")
+    );
+    modal.show();
+  }
+</script>
+{% endblock content %}

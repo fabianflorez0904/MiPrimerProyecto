@@ -1,0 +1,31 @@
+{% extends "base_app_parqueadero.html" %} {% block content %}
+
+<div class="card shadow-lg p-4">
+  <h2 class="text-center text-primary">Agregar Parqueadero</h2>
+  <form method="post">
+    {% csrf_token %} {{ form.non_field_errors }}
+    <div class="mb-3">
+      <label for="" class="form-label">Nombre:</label>
+      {{ form.nombre }}
+      <div class="text-danger">{{form.nombre.errors}}</div>
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">Capacidad:</label>
+      {{ form.capacidad }}
+      <div class="text-danger">{{form.capacidad.errors}}</div>
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">Ubicacion:</label>
+      {{ form.ubicacion }}
+      <div class="text-danger">{{form.ubicacion.errors}}</div>
+    </div>
+    <button type="submit" class="btn btn-success w-100">Guardar</button>
+  </form>
+  <div class="text-center mt-3">
+    <a href="{% url 'lista_parqueaderos' %}" class="btn btn-outline-primary"
+      >Volver</a
+    >
+  </div>
+</div>
+
+{% endblock content %}
