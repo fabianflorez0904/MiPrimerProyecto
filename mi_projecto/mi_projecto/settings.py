@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
 LOGIN_URL = '/login/'  # Esto evita el error 404
 LOGIN_REDIRECT_URL = '/parqueaderos/'  # Redirige después de iniciar sesión
 LOGOUT_REDIRECT_URL = '/login/'  # Redirige después de cerrar sesión
+STATIC_URL = '/parqueadero/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -3,6 +3,7 @@ from django.http import HttpResponseNotAllowed
 from .models import Parqueadero
 from .forms import ParqueaderoForm, RegistroForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 
 # Create your views here.
 
@@ -50,6 +51,7 @@ def eliminar_parqueadero(request, pk):
 
 
 def registro(request):
+
     if request.method == "POST":
         form = RegistroForm(request.POST)
         if form.is_valid():
@@ -58,8 +60,8 @@ def registro(request):
             user.save()
             # Inicia sesion automaticamente despues del registro
             login(request, user)
-            return redirect('lista_parqueadero')
+            return redirect('lista_parqueaderos')
     else:
         form = RegistroForm()
 
-    return render(request, "registro.html", {"form", form})
+    return render(request, 'registro.html', {'form': form})

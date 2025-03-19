@@ -1,53 +1,60 @@
 {% extends "base_app_parqueadero.html" %} {% block content %}
 
-<div class="card">
-  <div class="card-header">App parqueadero</div>
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-primary text-white fw-bold">
+    🚗 App Parqueadero
+  </div>
   <div class="card-body">
-    <h5 class="card-title">Parqueaderos Disponibles</h5>
-    {% comment %} TABLE {% endcomment %}
-    <table class="table">
-      <thead>
+    <h5 class="card-title">📍 Parqueaderos Disponibles</h5>
+
+    <table class="table table-striped table-hover text-center align-middle">
+      <thead class="table-dark">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Nombre</th>
-          <th scope="col" colspan="2">Capacida</th>
-          <th scope="col">Ubicacion</th>
+          <th scope="col">Capacidad</th>
+          <th scope="col">Ubicación</th>
           <th scope="col">Opciones</th>
         </tr>
       </thead>
       <tbody>
         {% for parqueadero in parqueaderos %}
         <tr>
-          <th scope="row">{{forloop.counter}}</th>
-          <td colspan="2">{{parqueadero.nombre}}</td>
-          <td>{{parqueadero.capacidad}}</td>
-          <td>{{parqueadero.ubicacion}}</td>
-          <td>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ parqueadero.nombre }}</td>
+          <td>{{ parqueadero.capacidad }}</td>
+          <td>{{ parqueadero.ubicacion }}</td>
+          <td class="d-flex justify-content-center gap-2">
             <a
               href="{% url 'editar_parqueadero' parqueadero.id %}"
-              class="btn btn-outline-warning"
+              class="btn btn-warning btn-sm"
             >
-              <i class="bi bi-pen"></i>
-              Editar
+              <i class="bi bi-pencil-square"></i> Editar
             </a>
-
             <button
               type="button"
-              class="btn btn-outline-danger"
-              onclick="confirmarEliminacion('{% url 'eliminar_parqueadero' parqueadero.id %}')"
+              class="btn btn-danger btn-sm"
+              onclick="confirmarEliminacion('{% url 'eliminar_parqueadero' parqueadero.id %}', '{{ parqueadero.nombre }}')"
             >
-              <i class="bi bi-trash-fill"></i>
-              Eliminar
+              <i class="bi bi-trash-fill"></i> Eliminar
             </button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-muted">
+            No hay parqueaderos registrados.
           </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
 
-    <a href="{% url 'agregar_parqueadero' %}" class="btn btn-primary"
-      >➕ Agregar parqueadero</a
-    >
+    <div class="text-end">
+      <a href="{% url 'agregar_parqueadero' %}" class="btn btn-success">
+        ➕ Agregar Parqueadero
+      </a>
+    </div>
   </div>
 </div>
 
@@ -73,7 +80,9 @@
         ></button>
       </div>
       <div class="modal-body">
-        ¿Estás seguro de que quieres eliminar este parqueadero?
+        <p id="deleteMessage">
+          ¿Estás seguro de que quieres eliminar este parqueadero?
+        </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -89,13 +98,16 @@
 </div>
 
 <script>
-  function confirmarEliminacion(url) {
-    let form = document.getElementById("deleteForm");
-    form.action = url;
+  function confirmarEliminacion(url, nombre) {
+    document.getElementById(
+      "deleteMessage"
+    ).textContent = `¿Estás seguro de que quieres eliminar el parqueadero "${nombre}"?`;
+    document.getElementById("deleteForm").action = url;
     let modal = new bootstrap.Modal(
       document.getElementById("confirmDeleteModal")
     );
     modal.show();
   }
 </script>
+
 {% endblock content %}

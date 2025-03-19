@@ -6,5 +6,5 @@ urlpatterns = [
     path('agregar/', agregar_parquedero, name="agregar_parqueadero"),
     path('editar/<int:pk>/', editar_parqueadero, name='editar_parqueadero'),
     path('eliminar/<int:pk>/', eliminar_parqueadero, name='eliminar_parqueadero'),
-    path('registo/', registro, name='registro')
+    path('registro/', registro, name='registro'),
 ]

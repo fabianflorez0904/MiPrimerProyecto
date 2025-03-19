@@ -44,6 +44,6 @@ class RegistroForm(forms.ModelForm):
         fields = ['username', 'email']
 
     def clean_password2(self):
-        if self.changed_data['password'] != self.changed_data['password2']:
+        if self.cleaned_data['password'] != self.cleaned_data['password2']:
             raise forms.ValidationError('Las contraseñas no coinciden')
         return self.cleaned_data['password2']
